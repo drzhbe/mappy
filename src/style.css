@@ -1,0 +1,6 @@
+body {
+	margin: 0;
+}
+.map__tile {
+	position: absolute;
+}
