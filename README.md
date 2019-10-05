@@ -24,3 +24,9 @@ All these are optional, just pick ones that you think will best demonstrate your
 * Any other extensions you think would demonstrate your ninja coding skills and how you will be an awesome addition to the Propeller team.
 
 That is a long list of things, and we are aware of the fact that your time is limited. Therefore, please let us know some of the tradeoffs that you have made, what you have focussed on and what you have ignored for now.
+
+Solution
+--------
+
+I'm using modules, so to avoid CORS you need to run the code in a server.
+`python -m SimpleHTTPServer` would suffice.
