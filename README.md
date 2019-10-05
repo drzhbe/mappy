@@ -28,6 +28,8 @@ That is a long list of things, and we are aware of the fact that your time is li
 Solution
 --------
 
+It's hosted here https://drzhbe.github.io/mappy/src/
+
 I'm using modules, so to avoid CORS you need to run the code in a server.
 `python -m SimpleHTTPServer` would suffice.
 
