@@ -28,23 +28,6 @@ export class Map {
     this.mapNode = document.createElement('div');
     this.container.appendChild(this.mapNode);
 
-    document.addEventListener('keydown', e => {
-      switch (e.key) {
-        case '+':
-        case '=': // handle "unshifted" `+` key too
-          this.zoomIn();
-          break;
-        case '-':
-          this.zoomOut();
-          break;
-      }
-    });
-
-    // Disable browser's default image dragging.
-    document.addEventListener('mousedown', e => e.preventDefault());
-    // Move the map when left mouse button is pressed.
-    document.addEventListener('mousemove', e => e.buttons === 1 && this.moveBy(e.movementX, e.movementY));
-
     this.loadTiles();
     this.updateView();
   }
@@ -59,7 +42,6 @@ export class Map {
     // rather than `+` as in standard operating-system-like drag'n'drop with the mouse cursor.
     this.center.x = this.center.x - this.normalize(dx);
     this.center.y = this.center.y - this.normalize(dy);
-    console.log(this.center.x, this.center.y)
     this.updateView();
   }
   moveTo(x, y) {
