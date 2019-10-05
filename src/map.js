@@ -59,12 +59,12 @@ export class Map {
     // Use center.x `-` dx (inverse dragging) to imitate spinning the globe with your hand,
     // rather than `+` as in standard operating-system-like drag'n'drop with the mouse cursor.
     this.center.x = clamp(
-        0,
+        this.normalize(viewport.width) / 2,
         this.center.x - this.normalize(dx),
         1 - this.normalize(viewport.width) / 2,
     );
     this.center.y = clamp(
-        0,
+        this.normalize(viewport.height) / 2,
         this.center.y - this.normalize(dy),
         1 - this.normalize(viewport.height) / 2,
     );
