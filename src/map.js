@@ -22,9 +22,9 @@ export class Map {
     this.getViewport = o.getViewport;
     this.MIN_ZOOM = o.minZoom || 0;
     this.MAX_ZOOM = o.maxZoom || 3;
-    this.zoom = o.zoom || this.MAX_ZOOM;
+    this.zoom = o.zoom || 0;
     this.tileSize = o.tileSize || 256;
-    this.center = { x: 0.5, y: 0.5 };
+    this.center = { x: 0.5, y: 0.5 }; // normalized center of the viewport
 
     document.addEventListener('keydown', e => {
       switch (e.key) {
@@ -46,6 +46,13 @@ export class Map {
     this.loadTiles();
     this.updateView();
   }
+  /**
+   * Move map relative to it's current position.
+   * Won't allow to move outside the viewport.
+   *
+   * @param {number} dx amount of pixels to move horizontally
+   * @param {number} dy amount of pixels to move vertically
+   */
   moveBy(dx, dy) {
     const mapSide = this.mapSide;
     const viewport = this.getViewport();
@@ -70,7 +77,11 @@ export class Map {
     this.setZoom(this.zoom - 1);
   }
   setZoom(zoom) {
-    this.zoom = clamp(this.MIN_ZOOM, zoom, this.MAX_ZOOM);
+    const newZoom = clamp(this.MIN_ZOOM, zoom, this.MAX_ZOOM);
+    if (newZoom === this.zoom) {
+      return;
+    }
+    this.zoom = newZoom;
     this.loadTiles();
     this.updateView();
   }
