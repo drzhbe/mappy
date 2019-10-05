@@ -19,12 +19,14 @@
 export class Map {
   constructor(o) {
     this.container = o.container;
-    this.getViewport = o.getViewport;
     this.MIN_ZOOM = o.minZoom || 0;
     this.MAX_ZOOM = o.maxZoom || 3;
     this.zoom = o.zoom || 0;
     this.tileSize = o.tileSize || 256;
     this.center = { x: 0.5, y: 0.5 }; // normalized center of the viewport
+
+    this.mapNode = document.createElement('div');
+    this.container.appendChild(this.mapNode);
 
     document.addEventListener('keydown', e => {
       switch (e.key) {
@@ -48,26 +50,15 @@ export class Map {
   }
   /**
    * Move map relative to it's current position.
-   * Won't allow to move outside the viewport.
    *
    * @param {number} dx amount of pixels to move horizontally
    * @param {number} dy amount of pixels to move vertically
    */
   moveBy(dx, dy) {
-    const mapSide = this.mapSide;
-    const viewport = this.getViewport();
     // Use center.x `-` dx (inverse dragging) to imitate spinning the globe with your hand,
     // rather than `+` as in standard operating-system-like drag'n'drop with the mouse cursor.
-    this.center.x = clamp(
-        this.normalize(viewport.width) / 2,
-        this.center.x - this.normalize(dx),
-        1 - this.normalize(viewport.width) / 2,
-    );
-    this.center.y = clamp(
-        this.normalize(viewport.height) / 2,
-        this.center.y - this.normalize(dy),
-        1 - this.normalize(viewport.height) / 2,
-    );
+    this.center.x = this.center.x - this.normalize(dx);
+    this.center.y = this.center.y - this.normalize(dy);
     this.updateView();
   }
   zoomIn() {
@@ -92,12 +83,6 @@ export class Map {
     return value / this.mapSide;
   }
   /**
-   * Denormalizes the value (0-1) relative to map side into real px value (0.5 => 1200px).
-   */
-  denormalize(value) {
-    return value * this.mapSide;
-  }
-  /**
    * Calculates how many tiles per zoom level there is.
    * Tiles-per-column is the same number as columns-per-zoom-level is.
    */
@@ -112,16 +97,17 @@ export class Map {
   }
   updateView() {
     const mapSide = this.mapSide;
-    const v = this.getViewport();
-    const x = clamp(0, this.denormalize(this.center.x) - v.width / 2, mapSide);
-    const y = clamp(0, this.denormalize(this.center.y) - v.height / 2, mapSide);
+    this.mapNode.style.width = `${mapSide}px`;
+    this.mapNode.style.height = `${mapSide}px`;
     // Negate translate values to have inverse dragging.
-    this.container.style.transform = `translate(-${x}px, -${y}px)`;
+    const x = -(this.center.x - 0.5) * 100;
+    const y = -(this.center.y - 0.5) * 100;
+    this.mapNode.style.transform = `translate(${x}%, ${y}%)`;
   }
   loadTiles() {
     // Clear the old tiles.
-    while (this.container.firstChild) {
-      this.container.firstChild.remove();
+    while (this.mapNode.firstChild) {
+      this.mapNode.firstChild.remove();
     }
 
     // Load new tiles.
@@ -132,7 +118,7 @@ export class Map {
         img.src = `../assets/tiled/${this.zoom}/${i}/${j}.jpg`;
         img.classList.add('map__tile');
         img.style.transform = `translate(${i * this.tileSize}px, ${j * this.tileSize}px)`;
-        this.container.appendChild(img);
+        this.mapNode.appendChild(img);
       }
     }
   }
