@@ -43,7 +43,6 @@ I went with pure js and no frameworks in order to:
 Downsides:
 1. The biggest downside is that I manage view updates myself – it's not scalable (on the other hand it's more performant)
 2. No types – it's not scalable
-3. No bundling – not scalable again :)
 
 What I focused on:
 1. Keep memory allocations as low as possible
@@ -52,4 +51,3 @@ What I focused on:
 What I'd like to improve:
 1. On closer zoom levels make dragging faster
 2. Try to use canvas instead of DOM elements
-

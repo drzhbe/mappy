@@ -2,12 +2,36 @@ body {
   margin: 0;
   overflow: hidden;
 }
+button {
+  font-size: 2em;
+  user-select: none;
+  background-color: #fd0;
+  border: 2px solid #020101;
+  width: 50px;
+  height: 50px;
+  padding: 0 0 4px 0;
+  line-height: 0; /* align emoji buttons with letter buttons */
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #020101;
+  color: #fd0;
+  transition: all .3s;
+}
 #app {
   cursor: grab;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.controls {
+  position: fixed;
+  z-index: 2;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .map__tile {
   position: absolute;

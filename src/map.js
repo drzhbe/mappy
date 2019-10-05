@@ -21,7 +21,7 @@ export class Map {
     this.container = o.container;
     this.MIN_ZOOM = o.minZoom || 0;
     this.MAX_ZOOM = o.maxZoom || 3;
-    this.zoom = o.zoom || 0;
+    this.zoom = o.zoom || 2;
     this.tileSize = o.tileSize || 256;
     this.center = { x: 0.5, y: 0.5 }; // normalized center of the viewport
 
@@ -59,6 +59,12 @@ export class Map {
     // rather than `+` as in standard operating-system-like drag'n'drop with the mouse cursor.
     this.center.x = this.center.x - this.normalize(dx);
     this.center.y = this.center.y - this.normalize(dy);
+    console.log(this.center.x, this.center.y)
+    this.updateView();
+  }
+  moveTo(x, y) {
+    this.center.x = x;
+    this.center.y = y;
     this.updateView();
   }
   zoomIn() {
